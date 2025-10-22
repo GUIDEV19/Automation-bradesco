@@ -312,12 +312,12 @@ export async function POST(request: NextRequest) {
       await page.waitForTimeout(3000);
         
       // ===================================================================
-      // VERIFICAR RESULTADO
+      // VERIFICAR RESULTADO - NOVA LÓGICA
       // ===================================================================
       
       console.log('Verificando resultado...');
       
-      // 1. VERIFICAÇÃO ESPECÍFICA: Elemento #spErro
+      // 1. PRIMEIRO: Verificar se há erro específico #spErro
       let hasSpecificError = false;
       let errorMessage = '';
       
@@ -339,44 +339,78 @@ export async function POST(request: NextRequest) {
         console.log('Elemento #spErro não encontrado (isso é ok)');
       }
       
-      // 2. Verificações gerais
-      const currentUrl = page.url();
-      const pageContent = await page.content();
-      
-      // Verificar se há mensagens de erro genéricas
-      const hasGenericError = pageContent.toLowerCase().includes('erro') || 
-                              pageContent.toLowerCase().includes('inválido') ||
-                              pageContent.toLowerCase().includes('error') ||
-                              pageContent.toLowerCase().includes('não encontrado') ||
-                              pageContent.toLowerCase().includes('falha');
-      
-      // Verificar se houve redirecionamento (geralmente indica sucesso)
-      const hasRedirect = currentUrl !== url;
-      
-      // DECISÃO FINAL
+      // 2. SEGUNDO: Se não há erro, aguardar 4s e verificar campos de sucesso
       let success = false;
       let finalMessage = '';
       
       if (hasSpecificError) {
-        // Se encontrou o erro específico #spErro, é FALHA
+        // Se encontrou erro específico, é FALHA
         success = false;
         finalMessage = `FALHA - ${errorMessage}`;
         console.log('Resultado: FALHA (erro específico #spErro detectado)');
-      } else if (hasRedirect) {
-        // Se houve redirecionamento, geralmente é sucesso
-        success = true;
-        finalMessage = 'SUCESSO - Cadastro realizado';
-        console.log('Resultado: SUCESSO (redirecionamento detectado)');
-      } else if (hasGenericError) {
-        // Se encontrou erro genérico
-        success = false;
-        finalMessage = 'FALHA - Erro detectado no formulário';
-        console.log('Resultado: FALHA (erro genérico detectado)');
       } else {
-        // Se não há indicadores claros, considerar sucesso
-        success = true;
-        finalMessage = 'SUCESSO - Sem erros detectados';
-        console.log('Resultado: SUCESSO (sem erros aparentes)');
+        // Se não há erro, aguardar 4s e verificar campos de sucesso
+        console.log('Nenhum erro detectado. Aguardando 4s para verificar campos de sucesso...');
+        await page.waitForTimeout(4000);
+        
+        // Verificar campos de sucesso: nomeResposta e dNascResposta
+        let hasSuccessFields = false;
+        
+        try {
+          console.log('Procurando campo nomeResposta (#nomeResposta)...');
+          const nomeRespostaField = await page.locator('#nomeResposta');
+          const nomeRespostaCount = await nomeRespostaField.count();
+          
+          console.log('Procurando campo dNascResposta (#dNascResposta)...');
+          const dNascRespostaField = await page.locator('#dNascResposta');
+          const dNascRespostaCount = await dNascRespostaField.count();
+          
+          if (nomeRespostaCount > 0 && dNascRespostaCount > 0) {
+            hasSuccessFields = true;
+            console.log('✅ CAMPOS DE SUCESSO DETECTADOS: nomeResposta e dNascResposta');
+            console.log('✅ Isso indica que o cadastro foi realizado com sucesso!');
+          } else {
+            console.log('❌ Campos de sucesso não encontrados');
+            console.log(`nomeResposta encontrado: ${nomeRespostaCount > 0}`);
+            console.log(`dNascResposta encontrado: ${dNascRespostaCount > 0}`);
+          }
+        } catch (error) {
+          console.log('❌ Erro ao verificar campos de sucesso:', error);
+        }
+        
+        if (hasSuccessFields) {
+          success = true;
+          finalMessage = 'SUCESSO - Campos de resposta encontrados (cadastro realizado)';
+          console.log('Resultado: SUCESSO (campos de resposta detectados)');
+        } else {
+          // Se não encontrou campos de sucesso, verificar outras indicações
+          const currentUrl = page.url();
+          const pageContent = await page.content();
+          
+          // Verificar se há mensagens de erro genéricas
+          const hasGenericError = pageContent.toLowerCase().includes('erro') || 
+                                  pageContent.toLowerCase().includes('inválido') ||
+                                  pageContent.toLowerCase().includes('error') ||
+                                  pageContent.toLowerCase().includes('não encontrado') ||
+                                  pageContent.toLowerCase().includes('falha');
+          
+          // Verificar se houve redirecionamento (geralmente indica sucesso)
+          const hasRedirect = currentUrl !== url;
+          
+          if (hasGenericError) {
+            success = false;
+            finalMessage = 'FALHA - Erro detectado no formulário';
+            console.log('Resultado: FALHA (erro genérico detectado)');
+          } else if (hasRedirect) {
+            success = true;
+            finalMessage = 'SUCESSO - Redirecionamento detectado';
+            console.log('Resultado: SUCESSO (redirecionamento detectado)');
+          } else {
+            success = false;
+            finalMessage = 'FALHA - Nenhum indicador de sucesso encontrado';
+            console.log('Resultado: FALHA (nenhum indicador de sucesso)');
+          }
+        }
       }
       
             // Screenshot desabilitado para produção
