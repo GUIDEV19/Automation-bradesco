@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
       });
       console.log('✅ Chromium padrão funcionou');
     } catch (error) {
-      console.log('❌ Chromium padrão falhou:', error.message);
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      console.log('❌ Chromium padrão falhou:', errorMessage);
       
       try {
         // Segunda tentativa: usar chromium headless shell
@@ -60,7 +61,8 @@ export async function POST(request: NextRequest) {
         });
         console.log('✅ Chrome do sistema funcionou');
       } catch (error2) {
-        console.log('❌ Chrome do sistema falhou:', error2.message);
+        const errorMessage2 = error2 instanceof Error ? error2.message : 'Erro desconhecido';
+        console.log('❌ Chrome do sistema falhou:', errorMessage2);
         
         // Terceira tentativa: usar caminho específico
         console.log('Tentativa 3: Caminho específico');
