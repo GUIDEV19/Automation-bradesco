@@ -37,3 +37,11 @@ next-env.d.ts
 # electron
 /release
 
+# Screenshots do Playwright
+debug-*.png
+resultado-*.png
+
+# Playwright
+.playwright
+playwright.config.ts
+

@@ -1,59 +1,31 @@
 {
-  "name": "automacao-excel-electron",
+  "name": "automacao-excel-web",
   "version": "1.0.0",
-  "description": "Sistema de automação com Next.js, Electron e Playwright",
-  "main": "electron/main.js",
+  "description": "Sistema de automação com Next.js e Playwright",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "electron": "electron .",
-    "electron-dev": "concurrently \"npm run dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "electron-build": "next build && electron-builder",
-    "postinstall": "electron-builder install-app-deps",
-    "setup": "node scripts/setup.js",
-    "create-example": "node scripts/create-example-excel.js"
+    "start": "next start"
   },
   "keywords": [
-    "electron",
     "nextjs",
     "playwright",
-    "automation"
+    "automation",
+    "web"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@playwright/test": "^1.56.1",
     "next": "^14.0.0",
-    "playwright": "^1.40.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "playwright": "^1.40.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "concurrently": "^8.2.0",
-    "electron": "^27.0.0",
-    "electron-builder": "^24.6.0",
-    "typescript": "^5.0.0",
-    "wait-on": "^7.0.0"
-  },
-  "build": {
-    "appId": "com.automacao.excel",
-    "productName": "Automação Excel",
-    "files": [
-      "electron/**/*",
-      "out/**/*",
-      "node_modules/**/*",
-      "package.json"
-    ],
-    "directories": {
-      "output": "dist"
-    },
-    "win": {
-      "target": "nsis"
-    }
+    "typescript": "^5.0.0"
   }
 }

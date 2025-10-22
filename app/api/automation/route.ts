@@ -20,7 +20,14 @@ export async function POST(request: NextRequest) {
 
     // Inicializar o Playwright
     const browser = await chromium.launch({
-      headless: false, // Deixar visível para debug
+      headless: true, // Servidor não tem display
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--disable-blink-features=AutomationControlled'
+      ]
     });
 
     const context = await browser.newContext({
@@ -231,9 +238,9 @@ export async function POST(request: NextRequest) {
         throw new Error('Falha ao preencher campo Apólice');
       }
       
-      // Tirar screenshot para debug
-      console.log('Tirando screenshot após preenchimento...');
-      await page.screenshot({ path: `debug-preenchido-${Date.now()}.png` });
+            // Screenshot desabilitado para produção
+            console.log('Screenshot desabilitado para produção');
+            // await page.screenshot({ path: `debug-preenchido-${Date.now()}.png` });
       
       await page.waitForTimeout(1000);
 
@@ -319,8 +326,9 @@ export async function POST(request: NextRequest) {
         console.log('Resultado: SUCESSO (sem erros aparentes)');
       }
       
-      // Tirar screenshot final
-      await page.screenshot({ path: `resultado-${success ? 'sucesso' : 'falha'}-${Date.now()}.png` });
+            // Screenshot desabilitado para produção
+            console.log('Screenshot final desabilitado para produção');
+            // await page.screenshot({ path: `resultado-${success ? 'sucesso' : 'falha'}-${Date.now()}.png` });
       
       await browser.close();
       
@@ -334,12 +342,14 @@ export async function POST(request: NextRequest) {
       throw error;
     }
 
-  } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
-    return NextResponse.json(
-      { success: false, error: errorMessage },
-      { status: 500 }
-    );
-  }
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+          console.error('Erro completo na automação:', error);
+          console.error('Stack trace:', error instanceof Error ? error.stack : 'N/A');
+          return NextResponse.json(
+            { success: false, error: errorMessage },
+            { status: 500 }
+          );
+        }
 }
 
