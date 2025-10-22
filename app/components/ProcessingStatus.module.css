@@ -1,0 +1,292 @@
+.container {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.progressSection {
+  margin-bottom: 2rem;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.progressLabel {
+  font-weight: 600;
+  color: #333;
+}
+
+.progressValue {
+  font-weight: 700;
+  color: #667eea;
+}
+
+.progressBar {
+  width: 100%;
+  height: 24px;
+  background: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.3s ease;
+  border-radius: 12px;
+}
+
+.logsSection {
+  margin-top: 2rem;
+}
+
+.logsTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.logsContainer {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+}
+
+.logEntry {
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  border-bottom: 1px solid #f0f0f0;
+  color: #424242;
+}
+
+.logEntry:last-child {
+  border-bottom: none;
+}
+
+.downloadButton {
+  width: 100%;
+  padding: 1rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: all 0.3s;
+}
+
+.downloadButton:hover {
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* Tabela de Resultados */
+.resultsSection {
+  margin-top: 2rem;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resultsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.resultsTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.resultsSummary {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.successBadge,
+.failureBadge,
+.totalBadge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.successBadge {
+  background: #d4edda;
+  color: #155724;
+}
+
+.failureBadge {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.totalBadge {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.resultsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.resultsTable thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.resultsTable th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #5568d3;
+}
+
+.resultsTable th:first-child {
+  width: 50px;
+  text-align: center;
+}
+
+.resultsTable th:last-child {
+  width: 150px;
+  text-align: center;
+}
+
+.resultsTable tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  transition: all 0.2s;
+}
+
+.resultsTable tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.rowSuccess {
+  background: #f8fff9;
+}
+
+.rowFailure {
+  background: #fff8f8;
+}
+
+.resultsTable td {
+  padding: 0.85rem 1rem;
+}
+
+.resultsTable td:first-child {
+  text-align: center;
+  font-weight: 600;
+  color: #666;
+}
+
+.cellCpf {
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  color: #333;
+}
+
+.cellCodigo {
+  font-family: 'Courier New', monospace;
+  color: #555;
+}
+
+.cellStatus {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.cellBadge {
+  text-align: center;
+}
+
+.badgeSuccess,
+.badgeFailure {
+  display: inline-block;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.badgeSuccess {
+  background: #28a745;
+  color: white;
+}
+
+.badgeFailure {
+  background: #dc3545;
+  color: white;
+}
+
+.badgeSim,
+.badgeNao {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.badgeSim {
+  background: #28a745;
+  color: white;
+}
+
+.badgeNao {
+  background: #6c757d;
+  color: white;
+}
+
+/* Responsividade para tabela */
+@media (max-width: 768px) {
+  .resultsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .resultsTable {
+    font-size: 0.8rem;
+  }
+  
+  .resultsTable th,
+  .resultsTable td {
+    padding: 0.6rem;
+  }
+  
+  .cellStatus {
+    font-size: 0.75rem;
+  }
+}
+
