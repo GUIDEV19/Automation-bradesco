@@ -19,16 +19,67 @@ export async function POST(request: NextRequest) {
     console.log('Dados recebidos:', { cpf: cpfString, codigo: codigoString });
 
     // Inicializar o Playwright
-    const browser = await chromium.launch({
-      headless: true, // Servidor não tem display
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-blink-features=AutomationControlled'
-      ]
-    });
+    console.log('Iniciando Playwright...');
+    
+    // Tentar diferentes abordagens para encontrar o Chromium
+    let browser;
+    try {
+      // Primeira tentativa: usar chromium padrão
+      console.log('Tentativa 1: Chromium padrão');
+      browser = await chromium.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--disable-blink-features=AutomationControlled',
+          '--disable-web-security',
+          '--disable-features=VizDisplayCompositor'
+        ]
+      });
+      console.log('✅ Chromium padrão funcionou');
+    } catch (error) {
+      console.log('❌ Chromium padrão falhou:', error.message);
+      
+      try {
+        // Segunda tentativa: usar chromium headless shell
+        console.log('Tentativa 2: Chromium headless shell');
+        browser = await chromium.launch({
+          headless: true,
+          channel: 'chrome', // Tentar usar Chrome do sistema
+          args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--disable-blink-features=AutomationControlled',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor'
+          ]
+        });
+        console.log('✅ Chrome do sistema funcionou');
+      } catch (error2) {
+        console.log('❌ Chrome do sistema falhou:', error2.message);
+        
+        // Terceira tentativa: usar caminho específico
+        console.log('Tentativa 3: Caminho específico');
+        browser = await chromium.launch({
+          headless: true,
+          executablePath: '/usr/bin/chromium-browser',
+          args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--disable-blink-features=AutomationControlled',
+            '--disable-web-security',
+            '--disable-features=VizDisplayCompositor'
+          ]
+        });
+        console.log('✅ Chromium do sistema funcionou');
+      }
+    }
 
     const context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
