@@ -64,11 +64,11 @@ export async function POST(request: NextRequest) {
         const errorMessage2 = error2 instanceof Error ? error2.message : 'Erro desconhecido';
         console.log('❌ Chrome do sistema falhou:', errorMessage2);
         
-        // Terceira tentativa: usar caminho específico
-        console.log('Tentativa 3: Caminho específico');
+        // Terceira tentativa: usar caminho do Playwright
+        console.log('Tentativa 3: Caminho do Playwright');
         browser = await chromium.launch({
           headless: true,
-          executablePath: '/usr/bin/chromium-browser',
+          executablePath: '/opt/render/.cache/ms-playwright/chromium_headless_shell-1194/chrome-linux/headless_shell',
           args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
             '--disable-features=VizDisplayCompositor'
           ]
         });
-        console.log('✅ Chromium do sistema funcionou');
+        console.log('✅ Chromium do Playwright funcionou');
       }
     }
 
